@@ -1,0 +1,35 @@
+:root {
+  /* 主题色 - 环保绿色 */
+  --primary-color: #67c23a;
+  --primary-dark: #2e7d32;
+  --primary-light: #a5d6a7;
+
+  /* 渐变 */
+  --bg-gradient: linear-gradient(135deg, #2e7d32 0%, #4caf50 100%);
+  --bg-gradient-light: linear-gradient(135deg, #f0f9eb 0%, #e8f5e9 100%);
+
+  /* 背景色 */
+  --bg-color: #f5f7fa;
+  --bg-white: #ffffff;
+
+  /* 文字颜色 */
+  --text-primary: #303133;
+  --text-regular: #606266;
+  --text-secondary: #909399;
+  --text-placeholder: #c0c4cc;
+
+  /* 边框颜色 */
+  --border-color: #ebeef5;
+  --border-light: #dcdfe6;
+
+  /* 成功/警告/危险色 */
+  --success-color: #67c23a;
+  --warning-color: #e6a23c;
+  --danger-color: #f56c6c;
+  --info-color: #909399;
+
+  /* 阴影 */
+  --shadow-sm: 0 1px 4px rgba(0, 0, 0, 0.08);
+  --shadow-md: 0 2px 12px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 10px 40px rgba(0, 0, 0, 0.15);
+}

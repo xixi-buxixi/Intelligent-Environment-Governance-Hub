@@ -1,0 +1,32 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mkdir -p front-end/css front-end/js front-end/images && mkdir -p back-end/src/main/java/com/environment/controller back-end/src/main/java/com/environment/service back-end/src/main/java/com/environment/util back-end/src/main/java/com/environment/config back-end/src/main/java/com/environment/pojo back-end/src/main/resources)",
+      "Bash(cd:*)",
+      "Bash(npm run:*)",
+      "Bash(find /d/My/Java/project/Intelligent-Environment-Governance-Hub -name *.py -type f)",
+      "Bash(docker port:*)",
+      "Bash(docker stop:*)",
+      "Bash(docker rm:*)",
+      "Bash(docker run:*)",
+      "Bash(python app.py)",
+      "Bash(mvn clean *)",
+      "Bash(conda run *)",
+      "Bash(D:/My/conda/envs/nanobot_env/python.exe *)",
+      "Bash(ls C:\\\\\\\\Users\\\\\\\\15070\\\\\\\\Desktop\\\\\\\\environment\\\\\\\\基于深度学习的宜春市环境检测数据分析可视化\\\\\\\\templates\\\\\\\\ *)",
+      "Bash(cp C:/Users/15070/Desktop/environment/基于深度学习的宜春市环境检测数据分析可视化/model-combination/models/AQI/boosted_air_model.pkl D:/My/Java/project/Intelligent-Environment-Governance-Hub/back-end-python/runtime/predict_models/AQI/)",
+      "Bash(cp C:/Users/15070/Desktop/environment/基于深度学习的宜春市环境检测数据分析可视化/model-combination/models/CO/lightweight_multifactor_model.pkl D:/My/Java/project/Intelligent-Environment-Governance-Hub/back-end-python/runtime/predict_models/CO/)",
+      "Bash(cp C:/Users/15070/Desktop/environment/基于深度学习的宜春市环境检测数据分析可视化/model-combination/models/NO2/lgbm_model.pkl D:/My/Java/project/Intelligent-Environment-Governance-Hub/back-end-python/runtime/predict_models/NO2/)",
+      "Bash(cp C:/Users/15070/Desktop/environment/基于深度学习的宜春市环境检测数据分析可视化/model-combination/models/NO2/xgb_model.pkl D:/My/Java/project/Intelligent-Environment-Governance-Hub/back-end-python/runtime/predict_models/NO2/)",
+      "Bash(cp C:/Users/15070/Desktop/environment/基于深度学习的宜春市环境检测数据分析可视化/model-combination/models/NO2/catboost_model.pkl D:/My/Java/project/Intelligent-Environment-Governance-Hub/back-end-python/runtime/predict_models/NO2/)",
+      "Bash(cp C:/Users/15070/Desktop/environment/基于深度学习的宜春市环境检测数据分析可视化/prediction_retrain_config.py D:/My/Java/project/Intelligent-Environment-Governance-Hub/back-end-python/src/services/)",
+      "Bash(cp C:/Users/15070/Desktop/environment/基于深度学习的宜春市环境检测数据分析可视化/model-combination/boosted_air_model.py D:/My/Java/project/Intelligent-Environment-Governance-Hub/back-end-python/src/services/)",
+      "Bash(cp C:/Users/15070/Desktop/environment/基于深度学习的宜春市环境检测数据分析可视化/model-combination/lightweight_air_model.py D:/My/Java/project/Intelligent-Environment-Governance-Hub/back-end-python/src/services/)",
+      "Bash(cp C:/Users/15070/Desktop/environment/基于深度学习的宜春市环境检测数据分析可视化/model-combination/specialized_low_air_model.py D:/My/Java/project/Intelligent-Environment-Governance-Hub/back-end-python/src/services/)",
+      "Bash(cp C:/Users/15070/Desktop/environment/基于深度学习的宜春市环境检测数据分析可视化/model-combination/predict_NO2.py D:/My/Java/project/Intelligent-Environment-Governance-Hub/back-end-python/src/services/)",
+      "Bash(python -c \"import ast; files=['src/config.py','src/services/prediction_retrain_config.py','src/services/comprehensive_predictor.py']; [print\\(f'{f}: OK'\\) for f in files if ast.parse\\(open\\(f,encoding='utf-8'\\).read\\(\\)\\)]\")",
+      "Bash(python -c \"import ast; files=['src/services/boosted_air_model.py','src/services/lightweight_air_model.py','src/services/specialized_low_air_model.py','src/services/predict_NO2.py','src/services/predict_O3.py']; [print\\(f'{f}: OK'\\) for f in files if ast.parse\\(open\\(f,encoding='utf-8'\\).read\\(\\)\\)]\")",
+      "Bash(python -c \"import ast; ast.parse\\(open\\('app.py',encoding='utf-8'\\).read\\(\\)\\); print\\('app.py: OK'\\)\")"
+    ]
+  }
+}

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.environment.mapper.RiskAnalysisRecordMapper">
+
+    <resultMap id="BaseResultMap" type="com.environment.pojo.RiskAnalysisRecord">
+        <id column="id" property="id"/>
+        <result column="user_id" property="userId"/>
+        <result column="create_user_name" property="createUserName"/>
+        <result column="city" property="city"/>
+        <result column="factors" property="factors"/>
+        <result column="horizon_days" property="horizonDays"/>
+        <result column="risk_level" property="riskLevel"/>
+        <result column="risk_score" property="riskScore"/>
+        <result column="key_factor" property="keyFactor"/>
+        <result column="confidence" property="confidence"/>
+        <result column="prediction_json" property="predictionJson"/>
+        <result column="trend_summary" property="trendSummary"/>
+        <result column="explanation" property="explanation"/>
+        <result column="suggestions" property="suggestions"/>
+        <result column="public_advice" property="publicAdvice"/>
+        <result column="report_content" property="reportContent"/>
+        <result column="create_time" property="createTime"/>
+    </resultMap>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO risk_analysis_record (
+            user_id, city, factors, horizon_days, risk_level, risk_score, key_factor,
+            confidence, prediction_json, trend_summary, explanation, suggestions,
+            public_advice, report_content
+        )
+        VALUES (
+            #{userId}, #{city}, #{factors}, #{horizonDays}, #{riskLevel}, #{riskScore}, #{keyFactor},
+            #{confidence}, #{predictionJson}, #{trendSummary}, #{explanation}, #{suggestions},
+            #{publicAdvice}, #{reportContent}
+        )
+    </insert>
+
+    <select id="selectById" resultMap="BaseResultMap">
+        SELECT r.*, u.username AS create_user_name
+        FROM risk_analysis_record r
+        LEFT JOIN sys_user u ON r.user_id = u.id
+        WHERE r.id = #{id}
+    </select>
+
+    <select id="countByCondition" resultType="int">
+        SELECT COUNT(*)
+        FROM risk_analysis_record r
+        WHERE 1=1
+        <if test="userId != null">
+            AND r.user_id = #{userId}
+        </if>
+        <if test="city != null and city != ''">
+            AND r.city LIKE CONCAT('%', #{city}, '%')
+        </if>
+        <if test="riskLevel != null and riskLevel != ''">
+            AND r.risk_level = #{riskLevel}
+        </if>
+    </select>
+
+    <select id="selectByCondition" resultMap="BaseResultMap">
+        SELECT r.*, u.username AS create_user_name
+        FROM risk_analysis_record r
+        LEFT JOIN sys_user u ON r.user_id = u.id
+        WHERE 1=1
+        <if test="userId != null">
+            AND r.user_id = #{userId}
+        </if>
+        <if test="city != null and city != ''">
+            AND r.city LIKE CONCAT('%', #{city}, '%')
+        </if>
+        <if test="riskLevel != null and riskLevel != ''">
+            AND r.risk_level = #{riskLevel}
+        </if>
+        ORDER BY r.create_time DESC
+        LIMIT #{offset}, #{size}
+    </select>
+</mapper>

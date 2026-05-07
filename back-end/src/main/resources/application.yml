@@ -1,0 +1,122 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /api
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+
+spring:
+  application:
+    name: environment-hub
+  data:
+    redis:
+      host: localhost
+      port: 6379
+
+  # 数据源配置
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/environment_hub?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+    username: root
+    password: 200575
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      initial-size: 5
+      min-idle: 5
+      max-active: 20
+      max-wait: 30000
+
+  # Jackson配置
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+    default-property-inclusion: non_null
+    property-naming-strategy: LOWER_CAMEL_CASE
+
+# MyBatis配置
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.environment.pojo
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+# PageHelper分页配置
+pagehelper:
+  helper-dialect: mysql
+  reasonable: true
+  support-methods-arguments: true
+  params: count=countSql
+
+# 日志配置
+logging:
+  level:
+    com.environment: debug
+    org.springframework: info
+    dev.langchain4j: debug
+    org.mybatis.spring: info
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n"
+
+# JWT配置
+jwt:
+  secret: environment-hub-jwt-secret-key-2024
+  expiration: 86400000  # 24小时
+# LangChain4J配置
+langchain4j:
+  open-ai:
+    chat-model:
+      api-key: sk-0395559857e04d5c8d9a51812a17fb76
+      base-url: https://dashscope.aliyuncs.com/compatible-mode/v1
+      model-name: qwen3.5-flash
+#      log-requests: true
+#      log-responses: true
+    streaming-chat-model:
+      api-key: sk-0395559857e04d5c8d9a51812a17fb76
+      base-url: https://dashscope.aliyuncs.com/compatible-mode/v1
+      model-name: qwen3.5-flash
+#      log-requests: true
+#      log-responses: true
+    embedding-model:
+      api-key: sk-0395559857e04d5c8d9a51812a17fb76
+      base-url: https://dashscope.aliyuncs.com/compatible-mode/v1
+      model-name: text-embedding-v3
+#      log-requests: true
+#      log-responses: true
+# 社区配置
+  community:
+    redis:
+      host: localhost
+      port: 6379
+
+# 知识库配置
+knowledge:
+  base-path: D:\My\Java\project\Intelligent-Environment-Governance-Hub\back-end\src\main\resources\content
+  chunk-size: 500
+  chunk-overlap: 100
+
+# Python API配置
+python:
+  api:
+    url: http://localhost:5001
+    chat-path: /api/chat
+    stream-path: /api/chat/stream
+    spider-fetch-path: /api/spider/fetch
+    predict-path: /api/predict/air-quality
+    default-mode: agent
+
+data:
+  fetch:
+    crawl:
+      max-gap-days: 7
+      notify-url: http://localhost:8080/api/data/crawl/notify
+    preview-limit: 50
+
+assistant:
+  memory:
+    max-messages: 20
+  retriever:
+    max-results: 3
+    min-score: 0.6

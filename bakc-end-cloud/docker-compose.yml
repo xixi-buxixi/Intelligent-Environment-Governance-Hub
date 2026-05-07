@@ -1,0 +1,67 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: environment-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: 200575
+      TZ: Asia/Shanghai
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./mysql-data:/var/lib/mysql
+      - ./sql:/docker-entrypoint-initdb.d
+
+  redis:
+    image: redis:7-alpine
+    container_name: environment-redis
+    ports:
+      - "6379:6379"
+
+  nacos:
+    image: nacos/nacos-server:v2.2.3
+    container_name: environment-nacos
+    environment:
+      MODE: standalone
+    ports:
+      - "8848:8848"
+      - "9848:9848"
+
+  sentinel:
+    image: bladex/sentinel-dashboard:1.8.6
+    container_name: environment-sentinel
+    ports:
+      - "8858:8858"
+
+  gateway-service:
+    build: ./gateway-service
+    ports:
+      - "8080:8080"
+    depends_on:
+      - nacos
+
+  user-service:
+    build: ./user-service
+    ports:
+      - "8081:8081"
+    depends_on:
+      - mysql
+      - nacos
+
+  assistant-service:
+    build: ./assistant-service
+    ports:
+      - "8082:8082"
+    depends_on:
+      - mysql
+      - redis
+      - nacos
+
+  data-service:
+    build: ./data-service
+    ports:
+      - "8083:8083"
+    depends_on:
+      - mysql
+      - nacos
