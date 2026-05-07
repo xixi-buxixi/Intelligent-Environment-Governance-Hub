@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: user-service
+  profiles:
+    active: dev  # 环境标识
+  cloud:
+    nacos:
+      config:
+        server-addr: localhost:8848
+        file-extension: yaml  # 配置文件格式
+        shared-configs: # 共享配置
+          - data-id: common.yaml
+            group: DEFAULT_GROUP
+            refresh: true

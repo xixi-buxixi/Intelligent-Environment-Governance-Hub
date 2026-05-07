@@ -1,0 +1,42 @@
+智能环境治理中枢平台启动说明
+
+一键启动：
+1. 在项目根目录双击 start-all.bat
+2. 脚本会分别打开 3 个命令行窗口，启动 Java 后端、Python API 和前端
+
+访问地址：
+- 前端：http://localhost:3000
+- Java 后端：http://localhost:8080
+- Python API：http://localhost:5001
+
+三端分别进入目录后的启动指令：
+
+1. Java 后端
+目录：back-end
+指令：
+mvn spring-boot:run
+
+2. Python API
+目录：back-end-python
+首次安装依赖：
+conda activate nanobot_env
+python -m pip install -r requirement.txt
+启动指令：
+conda activate nanobot_env
+python app.py
+
+如果预测接口提示缺少 joblib、lightgbm、xgboost、catboost 等模块，说明当前启动的不是 nanobot_env，
+或 nanobot_env 里依赖没有装完整。请重新执行上面的安装依赖命令后再启动。
+
+3. 前端
+目录：front-end
+首次安装依赖：
+npm install
+启动指令：
+npm run dev
+
+注意事项：
+- Java 后端需要 JDK 和 Maven。
+- Python API 需要 Python 3.10+，并确保 back-end-python\.env 已配置好需要的环境变量。
+- 前端需要 Node.js 和 npm。
+- Java 后端配置中会连接本机 MySQL 和 Redis，请确保相关服务已启动并且配置正确。

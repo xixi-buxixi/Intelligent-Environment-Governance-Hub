@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.environment.mapper.DataSourceMapper">
+
+    <resultMap id="BaseResultMap" type="com.environment.pojo.DataSource">
+        <id column="id" property="id"/>
+        <result column="source_name" property="sourceName"/>
+        <result column="source_code" property="sourceCode"/>
+        <result column="source_url" property="sourceUrl"/>
+        <result column="description" property="description"/>
+        <result column="data_types" property="dataTypes"/>
+        <result column="status" property="status"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+    </resultMap>
+
+    <select id="selectAllActive" resultMap="BaseResultMap">
+        SELECT * FROM data_source WHERE status = 1 ORDER BY id
+    </select>
+
+    <select id="selectById" resultMap="BaseResultMap">
+        SELECT * FROM data_source WHERE id = #{id}
+    </select>
+
+    <select id="selectByCode" resultMap="BaseResultMap">
+        SELECT * FROM data_source WHERE source_code = #{sourceCode}
+    </select>
+
+    <select id="selectAll" resultMap="BaseResultMap">
+        SELECT * FROM data_source ORDER BY id
+    </select>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO data_source (source_name, source_code, source_url, description, data_types, status)
+        VALUES (#{sourceName}, #{sourceCode}, #{sourceUrl}, #{description}, #{dataTypes}, #{status})
+    </insert>
+
+    <update id="update">
+        UPDATE data_source
+        SET source_name = #{sourceName},
+            source_code = #{sourceCode},
+            source_url = #{sourceUrl},
+            description = #{description},
+            data_types = #{dataTypes},
+            status = #{status}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteById">
+        DELETE FROM data_source WHERE id = #{id}
+    </delete>
+
+</mapper>

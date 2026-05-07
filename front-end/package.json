@@ -1,0 +1,24 @@
+{
+  "name": "intelligent-environment-governance-hub-frontend",
+  "version": "1.0.0",
+  "description": "智能环境治理中枢平台前端",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "serve": "npx http-server -p 3000 -c-1"
+  },
+  "dependencies": {
+    "vue": "^3.4.0",
+    "vue-router": "^4.2.0",
+    "element-plus": "^2.5.0",
+    "@element-plus/icons-vue": "^2.3.1",
+    "axios": "^1.6.0",
+    "@fortawesome/fontawesome-free": "^6.5.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^5.0.0",
+    "vite": "^5.0.0"
+  }
+}

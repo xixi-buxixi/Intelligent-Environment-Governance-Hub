@@ -1,0 +1,252 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Microsoft YaHei', 'PingFang SC', sans-serif;
+  background-color: var(--bg-color);
+  min-height: 100vh;
+}
+
+/* 头部导航通用样式 */
+.header {
+  background-color: var(--bg-white);
+  height: 60px;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: var(--shadow-sm);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo {
+  width: 36px;
+  height: 36px;
+  background-color: var(--primary-color);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo .el-icon {
+  color: #fff;
+  font-size: 20px;
+}
+
+.system-name {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-regular);
+  font-size: 14px;
+}
+
+.user-role {
+  padding: 2px 8px;
+  background-color: #f0f9eb;
+  color: var(--primary-color);
+  font-size: 12px;
+  border-radius: 4px;
+}
+
+/* 主内容区 */
+.main-content {
+  padding: 84px 24px 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* 卡片通用样式 */
+.section-card {
+  background-color: var(--bg-white);
+  border-radius: 8px;
+  padding: 24px;
+  margin-bottom: 20px;
+  border: 1px solid var(--border-color);
+}
+
+.section-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 20px;
+  padding-left: 12px;
+  border-left: 4px solid var(--primary-color);
+}
+
+/* 功能模块网格 */
+.module-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+/* 功能卡片 */
+.module-card {
+  background-color: var(--bg-white);
+  border-radius: 8px;
+  padding: 24px;
+  cursor: pointer;
+  transition: box-shadow 0.2s;
+  border: 1px solid var(--border-color);
+}
+
+.module-card:hover {
+  box-shadow: var(--shadow-md);
+}
+
+.module-card.disabled {
+  cursor: default;
+  opacity: 0.6;
+}
+
+.module-card.disabled:hover {
+  box-shadow: none;
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.card-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f0f9eb;
+}
+
+.card-icon .el-icon {
+  font-size: 22px;
+  color: var(--primary-color);
+}
+
+.card-icon.blue {
+  background-color: #ecf5ff;
+}
+
+.card-icon.blue .el-icon {
+  color: #409eff;
+}
+
+.card-icon.gray {
+  background-color: #f4f4f5;
+}
+
+.card-icon.gray .el-icon {
+  color: var(--text-secondary);
+}
+
+.card-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.card-desc {
+  font-size: 14px;
+  color: var(--text-regular);
+  line-height: 1.6;
+}
+
+.card-status {
+  margin-top: 16px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: var(--primary-color);
+}
+
+.status-dot.pending {
+  background-color: var(--text-placeholder);
+}
+
+.status-text {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+/* 底部 */
+.footer {
+  text-align: center;
+  padding: 24px;
+  color: var(--text-placeholder);
+  font-size: 12px;
+}
+
+/* 响应式 */
+@media (max-width: 992px) {
+  .module-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .header {
+    padding: 0 16px;
+  }
+
+  .system-name {
+    font-size: 16px;
+  }
+
+  .main-content {
+    padding: 76px 16px 16px;
+  }
+
+  .module-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .section-card {
+    padding: 16px;
+  }
+}
+
+@media (max-width: 576px) {
+  .welcome-section {
+    padding: 20px;
+  }
+
+  .welcome-title {
+    font-size: 20px;
+  }
+}

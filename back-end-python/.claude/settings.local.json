@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(echo:*)",
+      "Bash(source activate:*)",
+      "Bash(python main.py build)",
+      "Bash(python -c \"import certifi; print\\(certifi.where\\(\\)\\)\")",
+      "Bash(cd:*)",
+      "Bash(D:/My/conda/envs/nanobot_env/python.exe:*)",
+      "Bash(python -m pytest tests/test_structureOutputAgent.py -v)",
+      "Bash(pip list *)",
+      "Bash(pip install *)",
+      "Bash(conda run *)",
+      "Bash(\"D:\\\\My\\\\conda\\\\envs\\\\nanobot_env\\\\python.exe\" -m pytest tests/test_structureOutputAgent.py -v)",
+      "WebSearch"
+    ]
+  }
+}

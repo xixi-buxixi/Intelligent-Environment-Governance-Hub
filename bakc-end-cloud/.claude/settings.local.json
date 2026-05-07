@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(find D:MyJavaprojectIntelligent-Environment-Governance-Hubbakc-end-cloudcommon -name *.java)",
+      "Bash(mvn dependency:resolve -q)",
+      "Bash(mvn compile:*)"
+    ]
+  }
+}

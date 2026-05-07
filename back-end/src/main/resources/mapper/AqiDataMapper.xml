@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.environment.mapper.AqiDataMapper">
+
+    <resultMap id="AqiDataResultMap" type="com.environment.pojo.AqiDataRecord">
+        <id column="id" property="id"/>
+        <result column="province" property="province"/>
+        <result column="city" property="city"/>
+        <result column="date" property="date"/>
+        <result column="Quality" property="quality"/>
+        <result column="AQI" property="aqi"/>
+        <result column="AQI_Rank" property="aqiRank"/>
+        <result column="PM25" property="pm25"/>
+        <result column="PM10" property="pm10"/>
+        <result column="SO2" property="so2"/>
+        <result column="NO2" property="no2"/>
+        <result column="CO" property="co"/>
+        <result column="O3" property="o3"/>
+    </resultMap>
+
+    <select id="countDistinctDatesInRange" resultType="int">
+        SELECT COUNT(DISTINCT `date`)
+        FROM aqi_data
+        WHERE city = #{city}
+          AND `date` BETWEEN #{startDate} AND #{endDate}
+    </select>
+
+    <select id="countRowsInRange" resultType="int">
+        SELECT COUNT(*)
+        FROM aqi_data
+        WHERE city = #{city}
+          AND `date` BETWEEN #{startDate} AND #{endDate}
+    </select>
+
+    <select id="selectPreviewByRange" resultMap="AqiDataResultMap">
+        SELECT *
+        FROM aqi_data
+        WHERE city = #{city}
+          AND `date` BETWEEN #{startDate} AND #{endDate}
+        ORDER BY `date` DESC
+        LIMIT #{limit}
+    </select>
+
+    <select id="selectAllByRange" resultMap="AqiDataResultMap">
+        SELECT *
+        FROM aqi_data
+        WHERE city = #{city}
+          AND `date` BETWEEN #{startDate} AND #{endDate}
+        ORDER BY `date` ASC
+    </select>
+
+</mapper>
+

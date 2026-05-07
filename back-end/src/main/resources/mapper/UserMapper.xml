@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.environment.mapper.UserMapper">
+
+    <!-- 结果映射 -->
+    <resultMap id="BaseResultMap" type="com.environment.pojo.User">
+        <id column="id" property="id"/>
+        <result column="username" property="username"/>
+        <result column="password" property="password"/>
+        <result column="real_name" property="realName"/>
+        <result column="email" property="email"/>
+        <result column="phone" property="phone"/>
+        <result column="department" property="department"/>
+        <result column="role" property="role"/>
+        <result column="status" property="status"/>
+    </resultMap>
+
+    <!-- 基础字段 -->
+    <sql id="Base_Column_List">
+        id, username, password, real_name, email, phone, department, role, status
+    </sql>
+
+    <!-- 根据用户名查询 -->
+    <select id="selectByUsername" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM sys_user
+        WHERE username = #{username} AND deleted = 0
+    </select>
+
+    <!-- 根据ID查询 -->
+    <select id="selectById" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM sys_user
+        WHERE id = #{id} AND deleted = 0
+    </select>
+    <!--分页查询-->
+    <select id="selectList" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM sys_user
+        WHERE deleted = 0
+        ORDER BY id DESC
+    </select>
+
+    <!-- 根据角色分页查询 -->
+    <select id="selectListByRole" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM sys_user
+        WHERE deleted = 0
+        <if test="role != null and role != ''">
+            AND role = #{role}
+        </if>
+        ORDER BY id DESC
+    </select>
+
+    <!-- 插入用户 -->
+    <insert id="insert" parameterType="com.environment.pojo.User" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO sys_user (username, password, real_name, email, phone, department, role, status)
+        VALUES (#{username}, #{password}, #{realName}, #{email}, #{phone}, #{department}, #{role}, #{status})
+    </insert>
+
+    <!-- 更新用户 -->
+    <update id="update" parameterType="com.environment.pojo.User">
+        UPDATE sys_user
+        <set>
+            <if test="password != null">password = #{password},</if>
+            <if test="realName != null">real_name = #{realName},</if>
+            <if test="email != null">email = #{email},</if>
+            <if test="phone != null">phone = #{phone},</if>
+            <if test="department != null">department = #{department},</if>
+            <if test="role != null">role = #{role},</if>
+            <if test="status != null">status = #{status},</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <!-- 删除用户（逻辑删除） -->
+    <update id="deleteById">
+        UPDATE sys_user SET deleted = 1 WHERE id = #{id}
+    </update>
+
+</mapper>
