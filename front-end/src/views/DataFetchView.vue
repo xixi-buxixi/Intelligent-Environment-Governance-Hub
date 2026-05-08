@@ -395,7 +395,7 @@ const fetchPreview = async (forceUpdate) => {
 
 const exportCsv = async () => {
   try {
-    const response = await fetch('/api/data/fetch/export', {
+    const response = await fetch('/environment/api/data/fetch/export', {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${localStorage.getItem('token')}`,

@@ -51,7 +51,7 @@ const routes = [
 ]
 
 const router = createRouter({
-  history: createWebHistory(),
+  history: createWebHistory('/environment/'),
   routes
 })
 
@@ -88,7 +88,7 @@ async function validateToken() {
   validationInProgress = true
 
   try {
-    const response = await axios.get('/api/auth/validate', {
+    const response = await axios.get('/environment/api/auth/validate', {
       headers: {
         Authorization: `Bearer ${token}`
       },

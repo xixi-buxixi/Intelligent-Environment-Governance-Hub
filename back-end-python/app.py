@@ -454,7 +454,7 @@ if __name__ == '__main__':
     print(f"API地址: http://localhost:5001")
     print("=" * 60)
 
-    app.run(host='0.0.0.0', port=5001, debug=True)
+    app.run(host='0.0.0.0', port=5001, debug=False, use_reloader=False, threaded=True)
 
 
 

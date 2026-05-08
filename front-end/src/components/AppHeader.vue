@@ -2,7 +2,7 @@
   <header class="header">
     <div class="header-left">
       <div class="logo">
-        <el-icon><Leaf /></el-icon>
+        <el-icon><Sunny /></el-icon>
       </div>
       <span class="system-name">{{ title }}</span>
       <el-button v-if="showBack" type="success" plain size="small" @click="handleBack" style="margin-left: 12px;">
