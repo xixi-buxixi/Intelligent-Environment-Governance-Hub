@@ -145,7 +145,7 @@ const MODE_CONFIG = {
     description: '当前默认使用 LangChain Agent 模式，支持更完整的工具编排、记忆与多轮推理，更接近成熟 Agent 体验。',
     emptyTip: '输入问题后，LangChain Agent 会调用知识库与工具链为你解答',
     inputPlaceholder: '输入环保问题，按 Enter 发送，Shift+Enter 换行...',
-    apiPath: '/api/assistant/langchain/stream',
+    apiPath: '/environment/api/assistant/langchain/stream',
     mode: 'agent',
     quickQuestions: [
       '请解释 PM2.5 与 PM10 的区别，并给出防护建议',
@@ -160,7 +160,7 @@ const MODE_CONFIG = {
     description: 'LangChain4j 页面独立保留，适合验证 Java 端 RAG 能力，和 LangChain Agent 完全分开。',
     emptyTip: '输入问题后，LangChain4j 助手会基于 Java 侧知识检索进行回答',
     inputPlaceholder: '输入问题，按 Enter 发送，Shift+Enter 换行...',
-    apiPath: '/api/assistant/langchain4j/chat',
+    apiPath: '/environment/api/assistant/langchain4j/chat',
     mode: 'rag',
     quickQuestions: [
       '什么是温室气体排放核算？',

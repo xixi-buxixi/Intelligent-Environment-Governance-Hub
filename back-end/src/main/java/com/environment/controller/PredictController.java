@@ -66,7 +66,9 @@ public class PredictController {
             .withZone(ZoneId.systemDefault());
     private static final DateTimeFormatter RESULT_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
     private static final int REQUIRED_PREDICTION_DAYS = 7;
-    private static final int MODEL_VALID_DAYS = 14;
+
+    @Value("${predict.model-valid-days:14}")
+    private int modelValidDays;
 
     @PostMapping("/air-quality")
     public Result<Object> predictAirQuality(@RequestBody PredictRequest request, HttpServletRequest httpRequest) {
@@ -323,7 +325,7 @@ public class PredictController {
             trainingTime = trainingTimeMatcher.group(1).trim();
             try {
                 LocalDateTime trainedAt = LocalDateTime.parse(trainingTime, RESULT_TIME_FORMATTER);
-                modelExpired = trainedAt.plusDays(MODEL_VALID_DAYS).isBefore(LocalDateTime.now());
+                modelExpired = trainedAt.plusDays(modelValidDays).isBefore(LocalDateTime.now());
             } catch (Exception ignored) {
                 modelExpired = false;
             }

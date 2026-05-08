@@ -1,7 +1,7 @@
 server:
-  port: 8080
+  port: 8083
   servlet:
-    context-path: /api
+    context-path: /environment/api
     encoding:
       charset: UTF-8
       enabled: true
@@ -89,11 +89,11 @@ langchain4j:
   community:
     redis:
       host: localhost
-      port: 6379
+      port: 6380
 
 # 知识库配置
 knowledge:
-  base-path: D:\My\Java\project\Intelligent-Environment-Governance-Hub\back-end\src\main\resources\content
+  base-path: /opt/environment-hub/content
   chunk-size: 500
   chunk-overlap: 100
 
@@ -107,11 +107,15 @@ python:
     predict-path: /api/predict/air-quality
     default-mode: agent
 
+# 模型预测配置
+predict:
+  model-valid-days: 14  # 模型有效期(天)，超过此天数需要重新训练
+
 data:
   fetch:
     crawl:
       max-gap-days: 7
-      notify-url: http://localhost:8080/api/data/crawl/notify
+      notify-url: http://localhost:8083/environment/api/data/crawl/notify
     preview-limit: 50
 
 assistant:
