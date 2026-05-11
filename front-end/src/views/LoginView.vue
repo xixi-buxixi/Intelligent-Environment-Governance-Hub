@@ -142,14 +142,12 @@ const loadRememberedUser = () => {
 }
 
 const handleLogin = async () => {
-  // 验证码校验
   if (loginForm.captcha !== captchaCode.value) {
     ElMessage.error('验证码错误')
     refreshCaptcha()
     return
   }
 
-  // 表单验证
   try {
     await loginFormRef.value.validate()
   } catch (error) {
@@ -166,11 +164,9 @@ const handleLogin = async () => {
     })
 
     if (response.code === 200) {
-      // 保存token和用户信息
       localStorage.setItem('token', response.data.token)
       localStorage.setItem('userInfo', JSON.stringify(response.data.user))
 
-      // 记住用户
       if (loginForm.remember) {
         localStorage.setItem('rememberedUser', loginForm.username)
       } else {
@@ -178,8 +174,6 @@ const handleLogin = async () => {
       }
 
       ElMessage.success('登录成功！')
-
-      // 跳转到主页
       router.push('/home')
     } else {
       ElMessage.error(response.message || '登录失败')
@@ -212,64 +206,73 @@ onMounted(() => {
   width: 55%;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
+  gap: 24px;
   padding: 40px;
   justify-items: center;
   align-content: center;
   overflow-y: auto;
-  background: rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 }
 
 .func-card {
-  background: rgba(255, 255, 255, 0.85);
-  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  border-radius: 16px;
   width: 85%;
-  padding: 20px 15px;
+  padding: 24px 16px;
   text-align: center;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  box-shadow: var(--shadow-sm);
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   display: flex;
   flex-direction: column;
   align-items: center;
-  border: 2px solid transparent;
+  border: 1px solid rgba(255, 255, 255, 0.5);
 }
 
 .func-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
-  border-color: #67c23a;
+  box-shadow: var(--shadow-lg);
+  border-color: var(--primary-color);
   background: rgba(255, 255, 255, 0.95);
 }
 
 .func-card i {
   font-size: 32px;
   margin-bottom: 12px;
+  transition: transform 0.3s ease;
+}
+
+.func-card:hover i {
+  transform: scale(1.1);
 }
 
 .func-card span {
   font-size: 14px;
-  font-weight: 500;
-  color: #333;
+  font-weight: 600;
+  color: var(--text-primary);
 }
 
 .func-card.active i {
-  color: #67c23a;
+  color: var(--primary-color);
 }
 
 .func-card.disabled {
-  opacity: 0.6;
-  cursor: default;
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 .func-card.disabled i {
-  color: #999;
+  color: var(--text-secondary);
 }
 
 .func-card.disabled:hover {
   transform: none;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-  border-color: transparent;
+  box-shadow: var(--shadow-sm);
+  border-color: rgba(255, 255, 255, 0.5);
 }
 
 .login-section {
@@ -277,63 +280,71 @@ onMounted(() => {
   display: flex;
   justify-content: center;
   align-items: center;
-  background: rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 }
 
 .login-card {
   width: 80%;
   max-width: 400px;
-  background: rgba(255, 255, 255, 0.92);
-  border-radius: 16px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
-  padding: 40px 35px;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: 20px;
+  box-shadow: var(--shadow-lg);
+  padding: 40px;
+  border: 1px solid rgba(255, 255, 255, 0.6);
 }
 
 .logo-area {
   text-align: center;
-  margin-bottom: 30px;
+  margin-bottom: 32px;
 }
 
 .logo-icon {
-  width: 70px;
-  height: 70px;
-  background: linear-gradient(135deg, #2e7d32 0%, #4caf50 100%);
-  border-radius: 50%;
+  width: 64px;
+  height: 64px;
+  background: var(--bg-gradient);
+  border-radius: 16px;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 0 auto 15px;
-  box-shadow: 0 6px 20px rgba(46, 125, 50, 0.3);
+  margin: 0 auto 16px;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
 }
 
 .logo-icon i {
-  font-size: 32px;
+  font-size: 28px;
   color: white;
 }
 
 .logo-title {
-  font-size: 20px;
+  font-size: 22px;
   font-weight: 700;
-  color: #1b5e20;
-  margin-bottom: 5px;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+  letter-spacing: -0.025em;
 }
 
 .logo-subtitle {
-  font-size: 12px;
-  color: #81c784;
-  letter-spacing: 1px;
+  font-size: 13px;
+  color: var(--text-secondary);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
 }
 
-.login-form .el-input {
-  height: 45px;
+.login-form :deep(.el-input__wrapper) {
+  border-radius: 10px;
+  box-shadow: 0 0 0 1px var(--border-color) inset;
 }
 
-.login-form .el-input__wrapper {
-  border-radius: 8px;
+.login-form :deep(.el-input__wrapper:hover) {
+  box-shadow: 0 0 0 1px var(--primary-light) inset;
 }
 
-.login-form .el-form-item {
-  margin-bottom: 22px;
+.login-form :deep(.el-input__wrapper.is-focus) {
+  box-shadow: 0 0 0 2px var(--primary-light) inset !important;
 }
 
 .captcha-row {
@@ -341,70 +352,70 @@ onMounted(() => {
   gap: 12px;
 }
 
-.captcha-row .el-input {
-  flex: 1;
-}
-
 .captcha-box {
   width: 110px;
-  height: 45px;
-  background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
-  border-radius: 8px;
+  height: 40px;
+  background: var(--primary-light);
+  border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  font-size: 20px;
-  font-weight: bold;
+  font-size: 18px;
+  font-weight: 700;
   font-family: 'Courier New', monospace;
   letter-spacing: 4px;
-  color: #2e7d32;
+  color: var(--primary-dark);
   user-select: none;
-  border: 2px solid #a5d6a7;
+  border: 1px solid transparent;
   transition: all 0.3s ease;
 }
 
 .captcha-box:hover {
-  border-color: #4caf50;
-  transform: scale(1.02);
+  border-color: var(--primary-color);
+  transform: translateY(-1px);
 }
 
 .form-options {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 25px;
+  margin-bottom: 24px;
+  font-size: 14px;
 }
 
 .login-btn {
   width: 100%;
-  height: 48px;
+  height: 44px;
   font-size: 16px;
   font-weight: 600;
-  letter-spacing: 4px;
-  border-radius: 8px;
-  background: linear-gradient(135deg, #2e7d32 0%, #4caf50 100%);
+  border-radius: 10px;
+  background: var(--bg-gradient);
   border: none;
+  transition: all 0.3s ease;
 }
 
 .login-btn:hover {
-  background: linear-gradient(135deg, #1b5e20 0%, #388e3c 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+  opacity: 0.9;
 }
 
 .form-footer {
   text-align: center;
-  margin-top: 20px;
-  font-size: 13px;
-  color: #999;
+  margin-top: 24px;
+  font-size: 14px;
+  color: var(--text-secondary);
 }
 
 .form-footer a {
-  color: #67c23a;
+  color: var(--primary-color);
+  font-weight: 600;
   text-decoration: none;
 }
 
 .form-footer a:hover {
-  color: #2e7d32;
+  text-decoration: underline;
 }
 
 @media (max-width: 1024px) {
@@ -415,17 +426,16 @@ onMounted(() => {
   .cards-container {
     width: 100%;
     height: auto;
-    padding: 20px;
+    padding: 24px;
     grid-template-columns: repeat(3, 1fr);
   }
 
   .login-section {
     width: 100%;
-    padding: 20px;
+    padding: 40px 24px;
   }
 
   .login-card {
-    width: 100%;
     max-width: 450px;
   }
 }
@@ -433,21 +443,18 @@ onMounted(() => {
 @media (max-width: 768px) {
   .cards-container {
     grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
-    padding: 15px;
+    gap: 16px;
+    padding: 16px;
   }
 
   .func-card {
-    padding: 15px 10px;
+    width: 100%;
+    padding: 16px;
   }
 
   .func-card i {
     font-size: 24px;
     margin-bottom: 8px;
-  }
-
-  .func-card span {
-    font-size: 12px;
   }
 }
 </style>

@@ -1,3 +1,5 @@
+@import './inter-font.css';
+
 * {
   margin: 0;
   padding: 0;
@@ -5,20 +7,26 @@
 }
 
 body {
-  font-family: 'Microsoft YaHei', 'PingFang SC', sans-serif;
+  font-family: var(--font-family);
   background-color: var(--bg-color);
+  color: var(--text-regular);
   min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 /* 头部导航通用样式 */
 .header {
-  background-color: var(--bg-white);
-  height: 60px;
+  background-color: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  height: 64px;
   padding: 0 24px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   box-shadow: var(--shadow-sm);
+  border-bottom: 1px solid var(--border-color);
   position: fixed;
   top: 0;
   left: 0;
@@ -35,11 +43,12 @@ body {
 .logo {
   width: 36px;
   height: 36px;
-  background-color: var(--primary-color);
-  border-radius: 8px;
+  background: var(--bg-gradient);
+  border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
+  box-shadow: 0 2px 4px rgba(16, 185, 129, 0.2);
 }
 
 .logo .el-icon {
@@ -51,6 +60,7 @@ body {
   font-size: 18px;
   font-weight: 600;
   color: var(--text-primary);
+  letter-spacing: -0.025em;
 }
 
 .header-right {
@@ -65,19 +75,21 @@ body {
   gap: 8px;
   color: var(--text-regular);
   font-size: 14px;
+  font-weight: 500;
 }
 
 .user-role {
   padding: 2px 8px;
-  background-color: #f0f9eb;
-  color: var(--primary-color);
+  background-color: var(--primary-light);
+  color: var(--primary-dark);
   font-size: 12px;
-  border-radius: 4px;
+  font-weight: 600;
+  border-radius: 6px;
 }
 
 /* 主内容区 */
 .main-content {
-  padding: 84px 24px 24px;
+  padding: 88px 24px 24px;
   max-width: 1200px;
   margin: 0 auto;
 }
@@ -85,10 +97,16 @@ body {
 /* 卡片通用样式 */
 .section-card {
   background-color: var(--bg-white);
-  border-radius: 8px;
+  border-radius: 12px;
   padding: 24px;
-  margin-bottom: 20px;
+  margin-bottom: 24px;
   border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.section-card:hover {
+  box-shadow: var(--shadow-md);
 }
 
 .section-title {
@@ -98,36 +116,46 @@ body {
   margin-bottom: 20px;
   padding-left: 12px;
   border-left: 4px solid var(--primary-color);
+  border-radius: 2px;
 }
 
 /* 功能模块网格 */
 .module-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
+  gap: 24px;
 }
 
 /* 功能卡片 */
 .module-card {
   background-color: var(--bg-white);
-  border-radius: 8px;
+  border-radius: 12px;
   padding: 24px;
   cursor: pointer;
-  transition: box-shadow 0.2s;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
 }
 
 .module-card:hover {
-  box-shadow: var(--shadow-md);
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--primary-light);
 }
 
 .module-card.disabled {
-  cursor: default;
+  cursor: not-allowed;
   opacity: 0.6;
 }
 
 .module-card.disabled:hover {
-  box-shadow: none;
+  transform: none;
+  box-shadow: var(--shadow-sm);
+  border-color: var(--border-color);
 }
 
 .card-header {
@@ -138,34 +166,39 @@ body {
 }
 
 .card-icon {
-  width: 44px;
-  height: 44px;
-  border-radius: 8px;
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #f0f9eb;
+  background-color: var(--primary-light);
+  transition: transform 0.3s ease;
+}
+
+.module-card:hover .card-icon {
+  transform: scale(1.05);
 }
 
 .card-icon .el-icon {
-  font-size: 22px;
-  color: var(--primary-color);
+  font-size: 24px;
+  color: var(--primary-dark);
 }
 
 .card-icon.blue {
-  background-color: #ecf5ff;
+  background-color: #e0f2fe;
 }
 
 .card-icon.blue .el-icon {
-  color: #409eff;
+  color: #0369a1;
 }
 
 .card-icon.gray {
-  background-color: #f4f4f5;
+  background-color: #f3f4f6;
 }
 
 .card-icon.gray .el-icon {
-  color: var(--text-secondary);
+  color: #4b5563;
 }
 
 .card-title {
@@ -178,6 +211,7 @@ body {
   font-size: 14px;
   color: var(--text-regular);
   line-height: 1.6;
+  flex: 1;
 }
 
 .card-status {
@@ -188,27 +222,30 @@ body {
 }
 
 .status-dot {
-  width: 6px;
-  height: 6px;
+  width: 8px;
+  height: 8px;
   border-radius: 50%;
   background-color: var(--primary-color);
+  box-shadow: 0 0 0 2px var(--primary-light);
 }
 
 .status-dot.pending {
   background-color: var(--text-placeholder);
+  box-shadow: none;
 }
 
 .status-text {
   font-size: 12px;
+  font-weight: 500;
   color: var(--text-secondary);
 }
 
 /* 底部 */
 .footer {
   text-align: center;
-  padding: 24px;
-  color: var(--text-placeholder);
-  font-size: 12px;
+  padding: 32px;
+  color: var(--text-secondary);
+  font-size: 13px;
 }
 
 /* 响应式 */
@@ -228,7 +265,7 @@ body {
   }
 
   .main-content {
-    padding: 76px 16px 16px;
+    padding: 80px 16px 16px;
   }
 
   .module-grid {
