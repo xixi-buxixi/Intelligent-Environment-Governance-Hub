@@ -142,7 +142,6 @@ const userRole = computed(() => {
   return ''
 })
 
-// 进入模块
 const enterModule = (module) => {
   if (module === 'data') {
     router.push('/data-fetch')
@@ -165,24 +164,29 @@ const enterModule = (module) => {
 <style scoped>
 .home-view {
   min-height: 100vh;
+  background-color: var(--bg-color);
 }
 
 .welcome-section {
-  background-color: #fff;
-  border-radius: 8px;
-  padding: 24px 32px;
-  margin-bottom: 24px;
+  background: var(--bg-gradient-light);
+  border-radius: 16px;
+  padding: 32px;
+  margin-bottom: 32px;
+  border: 1px solid var(--primary-light);
+  box-shadow: var(--shadow-sm);
 }
 
 .welcome-title {
-  font-size: 24px;
-  font-weight: 600;
-  color: #303133;
-  margin-bottom: 8px;
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--primary-dark);
+  margin-bottom: 4px;
+  letter-spacing: -0.025em;
 }
 
 .welcome-desc {
   font-size: 14px;
-  color: #909399;
+  color: var(--text-regular);
+  font-weight: 500;
 }
 </style>
