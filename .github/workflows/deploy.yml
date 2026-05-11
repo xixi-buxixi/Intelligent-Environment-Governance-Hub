@@ -107,7 +107,7 @@ jobs:
           username: root
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           source: back-end-python
-          target: /opt/environment-hub/
+          target: /opt/environment-hub/python-backend/
           strip_components: 1
       - name: Install deps + Restart
         uses: appleboy/ssh-action@v1
