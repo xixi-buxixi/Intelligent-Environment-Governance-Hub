@@ -98,11 +98,11 @@ const captchaCode = ref('')
 
 const funcCards = ref([
   { name: '环保数据获取', icon: 'fas fa-database', active: true },
+  { name: '模型预测与分析', icon: 'fas fa-chart-line', active: true },
+  { name: '环保小助手', icon: 'fas fa-robot', active: true },
+  { name: '风险智能研判', icon: 'fas fa-shield-alt', active: true },
   { name: '系统管理', icon: 'fas fa-cog', active: true },
-  { name: '待开发', icon: 'fas fa-lock', active: false },
-  { name: '待开发', icon: 'fas fa-lock', active: false },
-  { name: '待开发', icon: 'fas fa-lock', active: false },
-  { name: '待开发', icon: 'fas fa-lock', active: false }
+  { name: '智能Agent', icon: 'fas fa-brain', active: true }
 ])
 
 const loginForm = reactive({

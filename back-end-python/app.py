@@ -44,6 +44,7 @@ Flask API服务
 load_dotenv()
 
 app = Flask(__name__)
+app.config['JSON_AS_ASCII'] = False
 CORS(app)
 
 # 全局变量

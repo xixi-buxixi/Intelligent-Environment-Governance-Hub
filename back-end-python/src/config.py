@@ -45,7 +45,7 @@ class DatabaseConfig:
         host = str(config['host'])
         port = str(config['port'])
         database = quote_plus(str(config['database']))
-        return f"mysql+pymysql://{user}:{password}@{host}:{port}/{database}"
+        return f"mysql+pymysql://{user}:{password}@{host}:{port}/{database}?charset=utf8mb4"
 
 
 db_config = DatabaseConfig.get_config()
