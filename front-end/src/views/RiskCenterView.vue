@@ -81,13 +81,13 @@
         <div class="section-card ai-section">
           <div class="section-title">AI 研判结论</div>
           <template v-if="analysisResult">
-            <div class="ai-text">{{ analysisResult.causeExplanation }}</div>
+            <div class="ai-text markdown-body" v-html="renderMarkdown(analysisResult.causeExplanation)"></div>
             <div class="suggestion-list">
               <div v-for="item in analysisResult.governanceSuggestions" :key="item" class="suggestion-item">
                 {{ item }}
               </div>
             </div>
-            <div class="public-advice">{{ analysisResult.publicAdvice }}</div>
+            <div class="public-advice markdown-body" v-html="renderMarkdown(analysisResult.publicAdvice)"></div>
           </template>
           <div v-else class="empty-text">点击一键智能研判后生成成因解释和治理建议</div>
         </div>
@@ -190,8 +190,14 @@
 <script setup>
 import { computed, onMounted, ref } from 'vue'
 import { ElMessage } from 'element-plus'
+import { marked } from 'marked'
 import AppHeader from '@/components/AppHeader.vue'
 import request from '@/utils/request'
+
+marked.setOptions({
+  breaks: true,
+  gfm: true
+})
 
 const cities = ['宜春', '南昌', '九江', '赣州', '吉安', '上饶', '抚州', '景德镇', '萍乡', '新余', '鹰潭']
 const factorOptions = [
@@ -390,6 +396,11 @@ const formatConfidence = (value) => {
   return `${Math.round(value * 100)}%`
 }
 
+const renderMarkdown = (text) => {
+  if (!text) return ''
+  return marked.parse(text)
+}
+
 onMounted(() => {
   loadOverview()
   loadRecords()
@@ -519,6 +530,119 @@ onMounted(() => {
   padding: 12px 14px;
   background-color: #ecf5ff;
   border-radius: 6px;
+}
+
+.markdown-body :deep(h1) {
+  font-size: 20px;
+  font-weight: 700;
+  margin: 16px 0 10px;
+  color: var(--text-primary);
+}
+
+.markdown-body :deep(h2) {
+  font-size: 17px;
+  font-weight: 700;
+  margin: 14px 0 8px;
+  color: var(--text-primary);
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 6px;
+}
+
+.markdown-body :deep(h3) {
+  font-size: 15px;
+  font-weight: 600;
+  margin: 12px 0 6px;
+  color: var(--text-primary);
+}
+
+.markdown-body :deep(p) {
+  margin: 6px 0;
+  line-height: 1.75;
+}
+
+.markdown-body :deep(strong) {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.markdown-body :deep(hr) {
+  border: none;
+  border-top: 1px solid var(--border-color);
+  margin: 16px 0;
+}
+
+.markdown-body :deep(blockquote) {
+  margin: 10px 0;
+  padding: 10px 16px;
+  border-left: 4px solid var(--primary-color);
+  background-color: #f8fbf6;
+  border-radius: 0 6px 6px 0;
+  color: var(--text-regular);
+}
+
+.markdown-body :deep(table) {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 10px 0;
+  font-size: 13px;
+}
+
+.markdown-body :deep(th),
+.markdown-body :deep(td) {
+  border: 1px solid var(--border-color);
+  padding: 8px 12px;
+  text-align: left;
+}
+
+.markdown-body :deep(th) {
+  background-color: #f5f7fa;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.markdown-body :deep(td) {
+  background-color: #fff;
+}
+
+.markdown-body :deep(ul),
+.markdown-body :deep(ol) {
+  margin: 6px 0;
+  padding-left: 24px;
+}
+
+.markdown-body :deep(li) {
+  margin: 4px 0;
+  line-height: 1.7;
+}
+
+.markdown-body :deep(code) {
+  background-color: #f0f2f5;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 13px;
+  font-family: 'SFMono-Regular', Consolas, monospace;
+}
+
+.markdown-body :deep(pre) {
+  background-color: #f6f8fa;
+  border-radius: 6px;
+  padding: 12px;
+  overflow-x: auto;
+  margin: 10px 0;
+}
+
+.markdown-body :deep(pre code) {
+  background: none;
+  padding: 0;
+}
+
+.markdown-body :deep(a) {
+  color: var(--primary-color);
+  text-decoration: none;
+}
+
+.markdown-body :deep(a:hover) {
+  text-decoration: underline;
 }
 
 .score-cell {

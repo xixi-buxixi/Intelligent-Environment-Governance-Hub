@@ -1,5 +1,6 @@
 package com.environment.controller;
 
+import com.environment.pojo.DTO.UserRegisterRequest;
 import com.environment.pojo.LoginRequest;
 import com.environment.pojo.LoginResponse;
 import com.environment.pojo.Result;
@@ -49,6 +50,24 @@ public class AuthController {
             return Result.error(e.getMessage());
         } catch (Exception e) {
             return Result.error("登录失败：" + e.getMessage());
+        }
+    }
+
+    /**
+     * 用户注册，默认创建普通用户
+     */
+    @PostMapping("/register")
+    public Result<String> register(@RequestBody UserRegisterRequest request) {
+        try {
+            Integer count = userService.register(request);
+            if (count != null && count > 0) {
+                return Result.success("注册成功，请返回登录", null);
+            }
+            return Result.error("注册失败");
+        } catch (RuntimeException e) {
+            return Result.badRequest(e.getMessage());
+        } catch (Exception e) {
+            return Result.error("注册失败：" + e.getMessage());
         }
     }
 

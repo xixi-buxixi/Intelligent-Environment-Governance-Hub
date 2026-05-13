@@ -20,6 +20,10 @@
             <el-icon><Lock /></el-icon>
             <span>权限配置</span>
           </el-menu-item>
+          <el-menu-item index="registerCenter">
+            <el-icon><UserFilled /></el-icon>
+            <span>注册中心</span>
+          </el-menu-item>
           <el-menu-item index="agent">
             <el-icon><Tools /></el-icon>
             <span>Agent配置</span>
@@ -139,6 +143,73 @@
             <div v-if="tableData.length === 0" class="empty-permission">
               暂无用户数据
             </div>
+          </div>
+        </div>
+
+        <div v-show="activeMenu === 'registerCenter'">
+          <h2 class="page-title">注册中心</h2>
+          <div class="search-area">
+            <div class="search-item">
+              <span class="label">处理状态</span>
+              <el-select v-model="applicationSearch.status" placeholder="全部" clearable>
+                <el-option label="待处理" value="PENDING" />
+                <el-option label="已同意" value="APPROVED" />
+                <el-option label="已拒绝" value="REJECTED" />
+              </el-select>
+            </div>
+            <div class="search-btns">
+              <el-button @click="resetApplicationSearch">重置</el-button>
+              <el-button type="primary" @click="searchApplications">搜索</el-button>
+            </div>
+          </div>
+
+          <div class="table-wrapper" v-loading="applicationLoading">
+            <el-table :data="applicationData" stripe style="width: 100%">
+              <el-table-column prop="username" label="用户名" min-width="110" />
+              <el-table-column prop="realName" label="真实姓名" min-width="110" />
+              <el-table-column label="申请权限" width="120">
+                <template #default="scope">{{ getRoleName(scope.row.targetRole) }}</template>
+              </el-table-column>
+              <el-table-column prop="reason" label="申请原因" min-width="220" />
+              <el-table-column label="状态" width="110">
+                <template #default="scope">
+                  <el-tag :type="getApplicationStatusType(scope.row.status)">
+                    {{ getApplicationStatusName(scope.row.status) }}
+                  </el-tag>
+                </template>
+              </el-table-column>
+              <el-table-column prop="reviewComment" label="处理意见" min-width="160">
+                <template #default="scope">{{ scope.row.reviewComment || '-' }}</template>
+              </el-table-column>
+              <el-table-column label="提交时间" width="180">
+                <template #default="scope">{{ formatTime(scope.row.createTime) }}</template>
+              </el-table-column>
+              <el-table-column label="操作" width="170" fixed="right">
+                <template #default="scope">
+                  <template v-if="scope.row.status === 'PENDING'">
+                    <el-button type="success" link size="small" @click="openApplicationReview(scope.row, 'approve')">
+                      同意
+                    </el-button>
+                    <el-button type="danger" link size="small" @click="openApplicationReview(scope.row, 'reject')">
+                      拒绝
+                    </el-button>
+                  </template>
+                  <span v-else class="muted-text">已处理</span>
+                </template>
+              </el-table-column>
+            </el-table>
+          </div>
+
+          <div class="pagination-area">
+            <el-pagination
+              v-model:current-page="applicationPagination.page"
+              v-model:page-size="applicationPagination.size"
+              :page-sizes="[10, 20, 50, 100]"
+              :total="applicationPagination.total"
+              layout="total, sizes, prev, pager, next, jumper"
+              @size-change="handleApplicationSizeChange"
+              @current-change="loadApplications"
+            />
           </div>
         </div>
 
@@ -349,6 +420,42 @@
       </template>
     </el-dialog>
 
+    <el-dialog
+      v-model="applicationReviewDialogVisible"
+      :title="applicationReviewMode === 'approve' ? '同意权限申请' : '拒绝权限申请'"
+      width="460px"
+      :close-on-click-modal="false"
+    >
+      <el-form :model="applicationReviewForm" label-width="90px">
+        <el-form-item label="申请用户">
+          <el-input :value="applicationReviewForm.username" disabled />
+        </el-form-item>
+        <el-form-item label="申请权限">
+          <el-input :value="getRoleName(applicationReviewForm.targetRole)" disabled />
+        </el-form-item>
+        <el-form-item label="处理意见">
+          <el-input
+            v-model="applicationReviewForm.comment"
+            type="textarea"
+            :rows="4"
+            maxlength="500"
+            show-word-limit
+            :placeholder="applicationReviewMode === 'approve' ? '可填写同意说明' : '请填写拒绝原因'"
+          />
+        </el-form-item>
+      </el-form>
+      <template #footer>
+        <el-button @click="applicationReviewDialogVisible = false">取消</el-button>
+        <el-button
+          :type="applicationReviewMode === 'approve' ? 'success' : 'danger'"
+          :loading="applicationReviewLoading"
+          @click="submitApplicationReview"
+        >
+          确认
+        </el-button>
+      </template>
+    </el-dialog>
+
     <input
       ref="uploadInputRef"
       type="file"
@@ -410,6 +517,18 @@ const pagination = reactive({
 })
 
 const tableData = ref([])
+const applicationLoading = ref(false)
+const applicationData = ref([])
+
+const applicationSearch = reactive({
+  status: ''
+})
+
+const applicationPagination = reactive({
+  page: 1,
+  size: 10,
+  total: 0
+})
 
 const dialogVisible = ref(false)
 const isEdit = ref(false)
@@ -441,6 +560,16 @@ const permissionForm = reactive({
   oldRole: '',
   newRole: '',
   password: ''
+})
+
+const applicationReviewDialogVisible = ref(false)
+const applicationReviewLoading = ref(false)
+const applicationReviewMode = ref('approve')
+const applicationReviewForm = reactive({
+  id: null,
+  username: '',
+  targetRole: 'MONITOR',
+  comment: ''
 })
 
 const uploadInputRef = ref(null)
@@ -537,6 +666,8 @@ const handleMenuSelect = (index) => {
     loadAgentConfig()
   } else if (index === 'rag') {
     loadRagConfig()
+  } else if (index === 'registerCenter') {
+    loadApplications()
   }
 }
 
@@ -679,6 +810,100 @@ const submitPermissionChange = async () => {
   } catch (error) {
     console.error('权限修改失败:', error)
   }
+}
+
+const loadApplications = async () => {
+  applicationLoading.value = true
+  try {
+    const params = {
+      page: applicationPagination.page,
+      size: applicationPagination.size
+    }
+    if (applicationSearch.status) {
+      params.status = applicationSearch.status
+    }
+    const response = await request.get('/system/permission-applications', { params })
+    if (response.code === 200 && response.data) {
+      applicationData.value = response.data.records || []
+      applicationPagination.total = response.data.total || 0
+    }
+  } catch (error) {
+    console.error('读取注册中心申请失败:', error)
+  } finally {
+    applicationLoading.value = false
+  }
+}
+
+const searchApplications = () => {
+  applicationPagination.page = 1
+  loadApplications()
+}
+
+const resetApplicationSearch = () => {
+  applicationSearch.status = ''
+  applicationPagination.page = 1
+  loadApplications()
+}
+
+const handleApplicationSizeChange = () => {
+  applicationPagination.page = 1
+  loadApplications()
+}
+
+const openApplicationReview = (row, mode) => {
+  applicationReviewMode.value = mode
+  Object.assign(applicationReviewForm, {
+    id: row.id,
+    username: row.realName || row.username,
+    targetRole: row.targetRole,
+    comment: mode === 'approve' ? '同意申请' : ''
+  })
+  applicationReviewDialogVisible.value = true
+}
+
+const submitApplicationReview = async () => {
+  if (applicationReviewMode.value === 'reject' && !applicationReviewForm.comment.trim()) {
+    ElMessage.warning('请填写拒绝原因')
+    return
+  }
+
+  applicationReviewLoading.value = true
+  try {
+    const action = applicationReviewMode.value === 'approve' ? 'approve' : 'reject'
+    const response = await request.post(`/system/permission-applications/${applicationReviewForm.id}/${action}`, {
+      comment: applicationReviewForm.comment
+    })
+    if (response.code === 200) {
+      ElMessage.success(response.message || '处理成功')
+      applicationReviewDialogVisible.value = false
+      await loadApplications()
+      await fetchUserList()
+    } else {
+      ElMessage.error(response.message || '处理失败')
+    }
+  } catch (error) {
+    console.error('处理权限申请失败:', error)
+  } finally {
+    applicationReviewLoading.value = false
+  }
+}
+
+const getApplicationStatusName = (status) => {
+  const map = {
+    PENDING: '待处理',
+    APPROVED: '已同意',
+    REJECTED: '已拒绝'
+  }
+  return map[status] || status
+}
+
+const getApplicationStatusType = (status) => {
+  const map = {
+    PENDING: 'warning',
+    APPROVED: 'success',
+    REJECTED: 'danger'
+  }
+  return map[status] || 'info'
 }
 
 const loadAgentConfig = async () => {
@@ -1037,6 +1262,11 @@ onMounted(() => {
   color: #909399;
   font-size: 12px;
   margin-top: 10px;
+}
+
+.muted-text {
+  color: #909399;
+  font-size: 13px;
 }
 
 @media (max-width: 768px) {

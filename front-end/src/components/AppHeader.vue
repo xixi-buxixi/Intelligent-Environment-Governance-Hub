@@ -16,6 +16,7 @@
         <span>{{ userName }}</span>
         <span class="user-role" v-if="userRole === 'ADMIN'">管理员</span>
         <span class="user-role" v-else-if="userRole === 'MONITOR'">监测员</span>
+        <span class="user-role" v-else-if="userRole === 'USER'">普通用户</span>
       </div>
       <el-button type="danger" plain size="small" @click="handleLogout">
         <el-icon><SwitchButton /></el-icon>

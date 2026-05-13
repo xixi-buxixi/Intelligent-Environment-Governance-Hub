@@ -72,6 +72,29 @@ INSERT INTO `sys_role` (`role_name`, `role_code`, `description`, `status`) VALUE
 ('监测员', 'MONITOR', '监测专员，拥有数据查看权限', 1);
 
 -- =============================================
+-- 用户权限申请表
+-- =============================================
+DROP TABLE IF EXISTS `permission_application`;
+
+CREATE TABLE `permission_application` (
+    `id` BIGINT(20) NOT NULL AUTO_INCREMENT COMMENT '申请ID',
+    `user_id` BIGINT(20) NOT NULL COMMENT '申请用户ID',
+    `current_role` VARCHAR(20) NOT NULL COMMENT '申请时角色',
+    `target_role` VARCHAR(20) NOT NULL COMMENT '申请目标角色',
+    `reason` VARCHAR(500) NOT NULL COMMENT '申请原因',
+    `status` VARCHAR(20) NOT NULL DEFAULT 'PENDING' COMMENT '状态：PENDING-待处理，APPROVED-已同意，REJECTED-已拒绝',
+    `reviewer_id` BIGINT(20) DEFAULT NULL COMMENT '审批管理员ID',
+    `review_comment` VARCHAR(500) DEFAULT NULL COMMENT '审批意见',
+    `create_time` DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `update_time` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    `review_time` DATETIME DEFAULT NULL COMMENT '审批时间',
+    PRIMARY KEY (`id`),
+    KEY `idx_permission_application_user` (`user_id`),
+    KEY `idx_permission_application_status` (`status`),
+    KEY `idx_permission_application_reviewer` (`reviewer_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='用户权限申请表';
+
+-- =============================================
 -- 数据源配置表
 -- =============================================
 DROP TABLE IF EXISTS `data_source`;

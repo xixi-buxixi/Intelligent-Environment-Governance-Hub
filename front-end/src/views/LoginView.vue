@@ -5,7 +5,9 @@
       <div class="func-card" v-for="(item, index) in funcCards" :key="index"
            :class="{ 'active': item.active, 'disabled': !item.active }">
         <i :class="item.icon"></i>
-        <span>{{ item.name }}</span>
+        <span class="func-name">{{ item.name }}</span>
+        <small>{{ item.desc }}</small>
+        <em>{{ item.scope }}</em>
       </div>
     </div>
 
@@ -76,10 +78,53 @@
         </el-form>
 
         <div class="form-footer">
-          还没有账号？<a href="#">立即注册</a>
+          还没有账号？<a href="#" @click.prevent="openRegisterDialog">立即注册</a>
         </div>
       </div>
     </div>
+
+    <el-dialog
+      v-model="registerDialogVisible"
+      title="普通用户注册"
+      width="520px"
+      :close-on-click-modal="false"
+    >
+      <el-form ref="registerFormRef" :model="registerForm" :rules="registerRules" label-width="86px">
+        <el-form-item label="用户名" prop="username">
+          <el-input v-model="registerForm.username" placeholder="请输入用户名" :prefix-icon="User" />
+        </el-form-item>
+        <el-form-item label="密码" prop="password">
+          <el-input v-model="registerForm.password" type="password" placeholder="请输入密码" show-password :prefix-icon="Lock" />
+        </el-form-item>
+        <el-form-item label="真实姓名" prop="realName">
+          <el-input v-model="registerForm.realName" placeholder="请输入真实姓名" :prefix-icon="User" />
+        </el-form-item>
+        <el-form-item label="邮箱" prop="email">
+          <el-input v-model="registerForm.email" placeholder="请输入邮箱" />
+        </el-form-item>
+        <el-form-item label="手机号" prop="phone">
+          <el-input v-model="registerForm.phone" placeholder="请输入手机号" />
+        </el-form-item>
+        <el-form-item label="部门" prop="department">
+          <el-select v-model="registerForm.department" placeholder="请选择部门" clearable style="width: 100%;">
+            <el-option label="环境监测部" value="环境监测部" />
+            <el-option label="生态保护部" value="生态保护部" />
+            <el-option label="污染防治部" value="污染防治部" />
+            <el-option label="信息技术部" value="信息技术部" />
+          </el-select>
+        </el-form-item>
+        <el-alert
+          title="注册后默认为普通用户，如需监测员权限可登录后提交权限申请。"
+          type="info"
+          :closable="false"
+          show-icon
+        />
+      </el-form>
+      <template #footer>
+        <el-button @click="registerDialogVisible = false">取消</el-button>
+        <el-button type="success" :loading="registerLoading" @click="submitRegister">注册</el-button>
+      </template>
+    </el-dialog>
   </div>
 </template>
 
@@ -93,16 +138,19 @@ import request from '@/utils/request'
 const router = useRouter()
 
 const loginFormRef = ref(null)
+const registerFormRef = ref(null)
 const loading = ref(false)
+const registerLoading = ref(false)
 const captchaCode = ref('')
+const registerDialogVisible = ref(false)
 
 const funcCards = ref([
-  { name: '环保数据获取', icon: 'fas fa-database', active: true },
-  { name: '模型预测与分析', icon: 'fas fa-chart-line', active: true },
-  { name: '环保小助手', icon: 'fas fa-robot', active: true },
-  { name: '风险智能研判', icon: 'fas fa-shield-alt', active: true },
-  { name: '系统管理', icon: 'fas fa-cog', active: true },
-  { name: '智能Agent', icon: 'fas fa-brain', active: true }
+  { name: '环保数据获取', desc: '多源采集与预览', scope: '登录用户可用', icon: 'fas fa-database', active: true },
+  { name: '模型预测', desc: '未来7天空气因子预测', scope: '登录用户可用', icon: 'fas fa-chart-line', active: true },
+  { name: '环保小助手', desc: 'RAG知识问答服务', scope: '登录用户可用', icon: 'fas fa-robot', active: true },
+  { name: '风险智能研判', desc: '风险评分与治理建议', scope: '登录用户可用', icon: 'fas fa-shield-alt', active: true },
+  { name: '权限申请', desc: '普通用户申请监测员', scope: '普通用户可用', icon: 'fas fa-user-shield', active: true },
+  { name: '系统管理', desc: '用户管理与注册中心', scope: '管理员可用', icon: 'fas fa-cog', active: true }
 ])
 
 const loginForm = reactive({
@@ -110,6 +158,15 @@ const loginForm = reactive({
   password: '',
   captcha: '',
   remember: false
+})
+
+const registerForm = reactive({
+  username: '',
+  password: '',
+  realName: '',
+  email: '',
+  phone: '',
+  department: ''
 })
 
 const loginRules = reactive({
@@ -121,6 +178,23 @@ const loginRules = reactive({
   ],
   captcha: [
     { required: true, message: '请输入验证码', trigger: 'blur' }
+  ]
+})
+
+const registerRules = reactive({
+  username: [
+    { required: true, message: '请输入用户名', trigger: 'blur' },
+    { min: 3, max: 50, message: '用户名长度为 3-50 个字符', trigger: 'blur' }
+  ],
+  password: [
+    { required: true, message: '请输入密码', trigger: 'blur' },
+    { min: 6, max: 100, message: '密码长度为 6-100 个字符', trigger: 'blur' }
+  ],
+  realName: [
+    { required: true, message: '请输入真实姓名', trigger: 'blur' }
+  ],
+  email: [
+    { type: 'email', message: '邮箱格式不正确', trigger: 'blur' }
   ]
 })
 
@@ -187,6 +261,44 @@ const handleLogin = async () => {
   }
 }
 
+const openRegisterDialog = () => {
+  Object.assign(registerForm, {
+    username: '',
+    password: '',
+    realName: '',
+    email: '',
+    phone: '',
+    department: ''
+  })
+  registerDialogVisible.value = true
+}
+
+const submitRegister = async () => {
+  try {
+    await registerFormRef.value.validate()
+  } catch (error) {
+    return
+  }
+
+  registerLoading.value = true
+  try {
+    const response = await request.post('/auth/register', { ...registerForm })
+    if (response.code === 200) {
+      ElMessage.success(response.message || '注册成功，请返回登录')
+      registerDialogVisible.value = false
+      loginForm.username = registerForm.username
+      loginForm.password = ''
+      refreshCaptcha()
+    } else {
+      ElMessage.error(response.message || '注册失败')
+    }
+  } catch (error) {
+    console.error('注册请求失败:', error)
+  } finally {
+    registerLoading.value = false
+  }
+}
+
 onMounted(() => {
   refreshCaptcha()
   loadRememberedUser()
@@ -250,10 +362,32 @@ onMounted(() => {
   transform: scale(1.1);
 }
 
-.func-card span {
+.func-card .func-name {
   font-size: 14px;
   font-weight: 600;
   color: var(--text-primary);
+}
+
+.func-card small {
+  display: block;
+  min-height: 18px;
+  margin-top: 6px;
+  font-size: 12px;
+  color: var(--text-regular);
+  line-height: 1.5;
+}
+
+.func-card em {
+  display: inline-flex;
+  align-items: center;
+  min-height: 22px;
+  margin-top: 10px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: #ecfdf5;
+  color: var(--primary-dark);
+  font-size: 12px;
+  font-style: normal;
 }
 
 .func-card.active i {
