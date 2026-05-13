@@ -159,12 +159,13 @@ public class DataModuleInitializer {
                 newsTypes
         );
 
-        // 清理重复/过渡/不再保留来源，避免页面出现不合规站点
+        // 清理重复/过渡/旧版来源，避免页面继续展示历史乱码数据源
         jdbcTemplate.update("""
                 DELETE FROM data_source
                 WHERE source_code IN (
                     'aqi_history_ext','aqi_city_rank','aqi_realtime','aqi_aggregated',
-                    'aqi_search','aqi_live','city_aqi','company_monitor','water_quality'
+                    'aqi_search','aqi_live','city_aqi','company_monitor','water_quality',
+                    'CNEMC','TIANQI','WATER_API'
                 )
                 """);
     }

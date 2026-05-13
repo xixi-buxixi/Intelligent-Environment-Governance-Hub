@@ -141,6 +141,6 @@ CREATE TABLE `data_fetch_record` (
 -- 初始化数据源数据
 -- =============================================
 INSERT INTO `data_source` (`source_name`, `source_code`, `source_url`, `description`, `data_types`, `status`) VALUES
-('中国环境监测总站', 'CNEMC', 'https://air.cnemc.cn/', '全国城市空气质量实时发布平台', '["AQI", "PM2.5", "PM10", "SO2", "NO2", "CO", "O3"]', 1),
-('天气后', 'TIANQI', 'https://www.tianqihou.com/', '历史天气数据查询网站', '["温度", "湿度", "风速", "风向", "天气状况"]', 1),
-('水环境监测数据', 'WATER_API', 'https://moonapi.com/', '水质监测数据API', '["水质等级", "pH值", "溶解氧", "高锰酸盐指数", "氨氮"]', 1);
+('空气质量历史数据（天气后报）', 'aqi_history', 'https://www.tianqihoubao.com', '来源：天气后报历史空气质量公开数据，覆盖城市日级空气质量指标。', '["AQI","AQI_RANK","QUALITY","PM25","PM10","SO2","NO2","CO","O3"]', 1),
+('历史气象数据', 'weather_history', 'https://www.tianqihoubao.com', '来源：天气后报历史天气页面，覆盖温度、天气、风力等。', '["TEMP_HIGH","TEMP_LOW","WEATHER","WIND","HUMIDITY"]', 1),
+('生态环境新闻', 'env_news', 'http://sthjj.yichun.gov.cn/ycssthjj/', '来源：宜春生态环境局公开新闻栏目。', '["TITLE","PUBLISH_TIME","SOURCE","URL"]', 1);
