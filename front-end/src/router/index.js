@@ -47,6 +47,12 @@ const routes = [
     name: 'riskCenter',
     component: () => import('@/views/RiskCenterView.vue'),
     meta: { requiresAuth: true }
+  },
+  {
+    path: '/permission-application',
+    name: 'permissionApplication',
+    component: () => import('@/views/PermissionApplicationView.vue'),
+    meta: { requiresAuth: true }
   }
 ]
 

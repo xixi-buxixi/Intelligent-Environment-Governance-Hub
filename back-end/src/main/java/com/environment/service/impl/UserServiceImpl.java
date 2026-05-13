@@ -2,6 +2,7 @@ package com.environment.service.impl;
 
 import com.environment.mapper.UserMapper;
 import com.environment.pojo.DTO.PageResult;
+import com.environment.pojo.DTO.UserRegisterRequest;
 import com.environment.pojo.LoginRequest;
 import com.environment.pojo.LoginResponse;
 import com.environment.pojo.User;
@@ -12,6 +13,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 
@@ -47,6 +49,37 @@ public class UserServiceImpl implements UserService {
 
         // 5. 返回登录响应
         return new LoginResponse(token, user);
+    }
+
+    @Override
+    public Integer register(UserRegisterRequest request) {
+        if (request == null) {
+            throw new RuntimeException("注册信息不能为空");
+        }
+        if (!StringUtils.hasText(request.getUsername())) {
+            throw new RuntimeException("用户名不能为空");
+        }
+        if (!StringUtils.hasText(request.getPassword())) {
+            throw new RuntimeException("密码不能为空");
+        }
+        if (!StringUtils.hasText(request.getRealName())) {
+            throw new RuntimeException("真实姓名不能为空");
+        }
+        String username = request.getUsername().trim();
+        if (userMapper.selectByUsername(username) != null) {
+            throw new RuntimeException("用户名已存在");
+        }
+
+        User user = new User();
+        user.setUsername(username);
+        user.setPassword(request.getPassword());
+        user.setRealName(request.getRealName().trim());
+        user.setEmail(trimToNull(request.getEmail()));
+        user.setPhone(trimToNull(request.getPhone()));
+        user.setDepartment(trimToNull(request.getDepartment()));
+        user.setRole("USER");
+        user.setStatus(1);
+        return userMapper.insert(user);
     }
 
     @Override
@@ -118,5 +151,9 @@ public class UserServiceImpl implements UserService {
         User targetUser = userMapper.selectById(currentUserId);
         targetUser.setRole(newRole);
         return userMapper.update(targetUser) > 0 ? "权限修改成功" : "权限修改失败";
+    }
+
+    private String trimToNull(String value) {
+        return StringUtils.hasText(value) ? value.trim() : null;
     }
 }

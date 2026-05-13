@@ -26,10 +26,10 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 .addPathPatterns("/**")  // 拦截所有请求
                 .excludePathPatterns(
                         "/auth/login",      // 登录接口
+                        "/auth/register",   // 注册接口
                         "/auth/captcha",    // 验证码接口
                         "/system/captcha",  // 系统验证码接口
                         "/data/crawl/notify", // 爬虫回调
-                        "/register",        // 注册接口
                         "/css/**",          // 静态资源
                         "/js/**",           // 静态资源
                         "/images/**",       // 图片资源（可选）

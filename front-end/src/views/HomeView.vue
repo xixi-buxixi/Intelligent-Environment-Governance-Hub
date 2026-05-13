@@ -85,8 +85,26 @@
           </div>
         </div>
 
+        <!-- 权限申请 - 普通用户可见 -->
+        <div class="module-card" v-if="userRole === 'USER'" @click="enterModule('permission')">
+          <div class="card-header">
+            <div class="card-icon">
+              <el-icon><Lock /></el-icon>
+            </div>
+            <span class="card-title">权限申请</span>
+          </div>
+          <div class="card-desc">
+            申请监测员权限<br>
+            查看申请处理情况
+          </div>
+          <div class="card-status">
+            <span class="status-dot"></span>
+            <span class="status-text">点击进入</span>
+          </div>
+        </div>
+
         <!-- 待开发模块 -->
-        <div class="module-card disabled" v-for="i in 1" :key="i">
+        <div class="module-card disabled" v-if="userRole !== 'USER'">
           <div class="card-header">
             <div class="card-icon gray">
               <el-icon><Lock /></el-icon>
@@ -151,6 +169,8 @@ const enterModule = (module) => {
     router.push('/assistant')
   } else if (module === 'risk') {
     router.push('/risk-center')
+  } else if (module === 'permission') {
+    router.push('/permission-application')
   } else if (module === 'system') {
     if (userRole.value !== 'ADMIN') {
       ElMessage.error('权限不足')

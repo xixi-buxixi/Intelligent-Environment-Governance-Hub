@@ -20,6 +20,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     // 不需要验证Token的路径
     private static final String[] EXCLUDE_PATHS = {
             "/auth/login",
+            "/auth/register",
             "/auth/captcha",
             "/system/health",
             "/system/info",

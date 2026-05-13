@@ -1,6 +1,7 @@
 package com.environment.service;
 
 import com.environment.pojo.DTO.PageResult;
+import com.environment.pojo.DTO.UserRegisterRequest;
 import com.environment.pojo.LoginRequest;
 import com.environment.pojo.LoginResponse;
 import com.environment.pojo.User;
@@ -19,6 +20,13 @@ public interface UserService {
      * @return 登录响应
      */
     LoginResponse login(LoginRequest request);
+
+    /**
+     * 用户注册，默认注册为普通用户
+     * @param request 注册请求
+     * @return 影响行数
+     */
+    Integer register(UserRegisterRequest request);
 
     /**
      * 根据用户名查询用户

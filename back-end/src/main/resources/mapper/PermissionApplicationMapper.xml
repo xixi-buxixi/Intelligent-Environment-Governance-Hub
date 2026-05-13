@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.environment.mapper.PermissionApplicationMapper">
+
+    <resultMap id="BaseResultMap" type="com.environment.pojo.PermissionApplication">
+        <id column="id" property="id"/>
+        <result column="user_id" property="userId"/>
+        <result column="username" property="username"/>
+        <result column="real_name" property="realName"/>
+        <result column="current_role" property="currentRole"/>
+        <result column="target_role" property="targetRole"/>
+        <result column="reason" property="reason"/>
+        <result column="status" property="status"/>
+        <result column="reviewer_id" property="reviewerId"/>
+        <result column="reviewer_name" property="reviewerName"/>
+        <result column="review_comment" property="reviewComment"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="review_time" property="reviewTime"/>
+    </resultMap>
+
+    <sql id="Application_Columns">
+        pa.id,
+        pa.user_id,
+        u.username,
+        u.real_name,
+        pa.current_role,
+        pa.target_role,
+        pa.reason,
+        pa.status,
+        pa.reviewer_id,
+        reviewer.real_name AS reviewer_name,
+        pa.review_comment,
+        pa.create_time,
+        pa.update_time,
+        pa.review_time
+    </sql>
+
+    <insert id="insert" parameterType="com.environment.pojo.PermissionApplication" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO permission_application (user_id, current_role, target_role, reason, status)
+        VALUES (#{userId}, #{currentRole}, #{targetRole}, #{reason}, #{status})
+    </insert>
+
+    <select id="selectById" resultMap="BaseResultMap">
+        SELECT <include refid="Application_Columns"/>
+        FROM permission_application pa
+        LEFT JOIN sys_user u ON pa.user_id = u.id
+        LEFT JOIN sys_user reviewer ON pa.reviewer_id = reviewer.id
+        WHERE pa.id = #{id}
+    </select>
+
+    <select id="selectPendingByUserId" resultMap="BaseResultMap">
+        SELECT <include refid="Application_Columns"/>
+        FROM permission_application pa
+        LEFT JOIN sys_user u ON pa.user_id = u.id
+        LEFT JOIN sys_user reviewer ON pa.reviewer_id = reviewer.id
+        WHERE pa.user_id = #{userId} AND pa.status = 'PENDING'
+        ORDER BY pa.create_time DESC
+        LIMIT 1
+    </select>
+
+    <select id="selectByUserId" resultMap="BaseResultMap">
+        SELECT <include refid="Application_Columns"/>
+        FROM permission_application pa
+        LEFT JOIN sys_user u ON pa.user_id = u.id
+        LEFT JOIN sys_user reviewer ON pa.reviewer_id = reviewer.id
+        WHERE pa.user_id = #{userId}
+        ORDER BY pa.create_time DESC
+    </select>
+
+    <select id="selectList" resultMap="BaseResultMap">
+        SELECT <include refid="Application_Columns"/>
+        FROM permission_application pa
+        LEFT JOIN sys_user u ON pa.user_id = u.id
+        LEFT JOIN sys_user reviewer ON pa.reviewer_id = reviewer.id
+        WHERE 1 = 1
+        <if test="status != null and status != ''">
+            AND pa.status = #{status}
+        </if>
+        ORDER BY pa.create_time DESC
+    </select>
+
+    <update id="updateReviewResult" parameterType="com.environment.pojo.PermissionApplication">
+        UPDATE permission_application
+        SET status = #{status},
+            reviewer_id = #{reviewerId},
+            review_comment = #{reviewComment},
+            review_time = NOW()
+        WHERE id = #{id}
+    </update>
+</mapper>
