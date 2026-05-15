@@ -68,13 +68,13 @@ jwt:
 langchain4j:
   open-ai:
     chat-model:
-      api-key: sk-0395559857e04d5c8d9a51812a17fb76
+      api-key: 
       base-url: https://dashscope.aliyuncs.com/compatible-mode/v1
       model-name: qwen3.5-flash
 #      log-requests: true
 #      log-responses: true
     streaming-chat-model:
-      api-key: sk-0395559857e04d5c8d9a51812a17fb76
+      api-key: 
       base-url: https://dashscope.aliyuncs.com/compatible-mode/v1
       model-name: qwen3.5-flash
 #      log-requests: true
