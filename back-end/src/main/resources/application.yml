@@ -12,15 +12,15 @@ spring:
     name: environment-hub
   data:
     redis:
-      host: localhost
-      port: 6379
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
 
   # 数据源配置
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/environment_hub?useUnicode=true&characterEncoding=utf8mb4&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
-    username: root
-    password: your_db_password
+    url: jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3306}/${DB_NAME:environment_hub}?useUnicode=true&characterEncoding=utf8mb4&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+    username: ${DB_USER:root}
+    password: ${DB_PASSWORD:}
     type: com.alibaba.druid.pool.DruidDataSource
     druid:
       initial-size: 5
@@ -62,25 +62,25 @@ logging:
 
 # JWT配置
 jwt:
-  secret: environment-hub-jwt-secret-key-2024
+  secret: ${JWT_SECRET:environment-hub-jwt-secret-key-2024}
   expiration: 86400000  # 24小时
 # LangChain4J配置
 langchain4j:
   open-ai:
     chat-model:
-      api-key: your_dashscope_api_key
+      api-key: ${DASHSCOPE_API_KEY:}
       base-url: https://dashscope.aliyuncs.com/compatible-mode/v1
       model-name: qwen3.5-flash
 #      log-requests: true
 #      log-responses: true
     streaming-chat-model:
-      api-key: your_dashscope_api_key
+      api-key: ${DASHSCOPE_API_KEY:}
       base-url: https://dashscope.aliyuncs.com/compatible-mode/v1
       model-name: qwen3.5-flash
 #      log-requests: true
 #      log-responses: true
     embedding-model:
-      api-key: your_dashscope_api_key
+      api-key: ${DASHSCOPE_API_KEY:}
       base-url: https://dashscope.aliyuncs.com/compatible-mode/v1
       model-name: text-embedding-v3
 #      log-requests: true
@@ -88,8 +88,8 @@ langchain4j:
 # 社区配置
   community:
     redis:
-      host: localhost
-      port: 6380
+      host: ${COMMUNITY_REDIS_HOST:localhost}
+      port: ${COMMUNITY_REDIS_PORT:6380}
 
 # 知识库配置
 knowledge:
@@ -100,7 +100,7 @@ knowledge:
 # Python API配置
 python:
   api:
-    url: http://localhost:5001
+    url: ${PYTHON_API_URL:http://localhost:5001}
     chat-path: /api/chat
     stream-path: /api/chat/stream
     spider-fetch-path: /api/spider/fetch
@@ -115,7 +115,7 @@ data:
   fetch:
     crawl:
       max-gap-days: 7
-      notify-url: http://localhost:8083/environment/api/data/crawl/notify
+      notify-url: ${CRAWL_NOTIFY_URL:http://localhost:8083/environment/api/data/crawl/notify}
     preview-limit: 50
 
 assistant:

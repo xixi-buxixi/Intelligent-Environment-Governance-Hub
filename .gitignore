@@ -8,6 +8,12 @@
 *.sw?
 .DS_Store
 
+# Environment files (contain secrets)
+.env
+.env.local
+.env.production
+.env.development
+
 # Common Logs
 logs/
 *.log
